@@ -120,7 +120,7 @@ function Library.new(Library, name)
         syn.protect_gui(dogent)
     end
 
-    dogent.Name = "XA_LuaWare"
+    dogent.Name = "LuaWare"
     dogent.Parent = gethui()
     Library.Gui = dogent
 
@@ -152,7 +152,7 @@ function Library.new(Library, name)
 
     MainC.CornerRadius = UDim.new(0, 5.5)
     MainC.Name = "MainC"
-    MainC.Parent = Frame
+    MainC.Parent = Main
 
     SB.Name = "SB"
     SB.Parent = Main
