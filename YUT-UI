@@ -228,58 +228,102 @@ function Library.new(Library, name)
         end
     )
     
-    Open.Name = "Open"
-    Open.Parent = dogent
-    Open.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Open.BackgroundTransparency = 0.15
-    Open.Position = UDim2.new(0.5, 0, 0, 12)
-    Open.Size = UDim2.new(0, 240, 0, 38)
-    Open.AnchorPoint = Vector2.new(0.5, 0)
-    Open.Font = Enum.Font.GothamSemibold
-    Open.Text = ""
-    Open.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Open.TextTransparency = 0
-    Open.TextSize = 16.000
-    Open.Active = true
-    Open.Draggable = true
-    Open.ClipsDescendants = false
+Open.Name = "Open"
+Open.Parent = dogent
+Open.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Open.BackgroundTransparency = 0.15
+Open.Position = UDim2.new(0.5, 0, 0, 12)
+Open.Size = UDim2.new(0, 260, 0, 40)
+Open.AnchorPoint = Vector2.new(0.5, 0)
+Open.Font = Enum.Font.GothamSemibold
+Open.Text = ""
+Open.TextColor3 = Color3.fromRGB(255, 255, 255)
+Open.TextTransparency = 0
+Open.TextSize = 16.000
+Open.Active = true
+Open.Draggable = true
+Open.ClipsDescendants = false
+Open.AutoButtonColor = false
 
-    local OpenCorner = Instance.new("UICorner")
-    OpenCorner.CornerRadius = UDim.new(0, 20)
-    OpenCorner.Parent = Open
+local OpenCorner = Instance.new("UICorner")
+OpenCorner.CornerRadius = UDim.new(0, 22)
+OpenCorner.Parent = Open
+
+local StatusDot = Instance.new("Frame")
+StatusDot.Name = "StatusDot"
+StatusDot.Parent = Open
+StatusDot.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
+StatusDot.Size = UDim2.new(0, 10, 0, 10)
+StatusDot.Position = UDim2.new(0, 14, 0.5, 0)
+StatusDot.AnchorPoint = Vector2.new(0, 0.5)
+
+local DotCorner = Instance.new("UICorner")
+DotCorner.CornerRadius = UDim.new(1, 0)
+DotCorner.Parent = StatusDot
+
+local ScriptNameLabel = Instance.new("TextLabel")
+ScriptNameLabel.Name = "ScriptNameLabel"
+ScriptNameLabel.Parent = Open
+ScriptNameLabel.BackgroundTransparency = 1
+ScriptNameLabel.Size = UDim2.new(1, -38, 1, 0)
+ScriptNameLabel.Position = UDim2.new(0, 34, 0, 0)
+ScriptNameLabel.Font = Enum.Font.GothamSemibold
+ScriptNameLabel.Text = name
+ScriptNameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+ScriptNameLabel.TextSize = 17
+ScriptNameLabel.TextXAlignment = Enum.TextXAlignment.Left
+ScriptNameLabel.TextYAlignment = Enum.TextYAlignment.Center
+
+local Glow = Instance.new("ImageLabel")
+Glow.Name = "Glow"
+Glow.Parent = Open
+Glow.BackgroundTransparency = 1
+Glow.Size = UDim2.new(1, 20, 1, 20)
+Glow.Position = UDim2.new(0, -10, 0, -10)
+Glow.Image = "rbxassetid://3570695787"
+Glow.ImageColor3 = Color3.fromRGB(100, 200, 255)
+Glow.ImageTransparency = 0.85
+Glow.ZIndex = 0
+
+local function playClickAnimation()
+    local shrinkTween = TweenService:Create(
+        Open,
+        TweenInfo.new(0.05, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+        {Size = UDim2.new(0, 250, 0, 38)}
+    )
     
-    local StatusDot = Instance.new("Frame")
-    StatusDot.Name = "StatusDot"
-    StatusDot.Parent = Open
-    StatusDot.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
-    StatusDot.Size = UDim2.new(0, 10, 0, 10)
-    StatusDot.Position = UDim2.new(0, 12, 0.5, -5)
-    StatusDot.AnchorPoint = Vector2.new(0, 0.5)
-
-    local DotCorner = Instance.new("UICorner")
-    DotCorner.CornerRadius = UDim.new(1, 0)
-    DotCorner.Parent = StatusDot
-
-    local ScriptNameLabel = Instance.new("TextLabel")
-    ScriptNameLabel.Name = "ScriptNameLabel"
-    ScriptNameLabel.Parent = Open
-    ScriptNameLabel.BackgroundTransparency = 1
-    ScriptNameLabel.Size = UDim2.new(1, -20, 1, 0)
-    ScriptNameLabel.Position = UDim2.new(0, 20, 0, 0)
-    ScriptNameLabel.Font = Enum.Font.GothamSemibold
-    ScriptNameLabel.Text = name
-    ScriptNameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ScriptNameLabel.TextSize = 16
-    ScriptNameLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-    Open.MouseButton1Click:Connect(ToggleUILib)
-
-    Library.ToggleKeybind = Enum.KeyCode.LeftControl
-    UserInputService.InputBegan:Connect(function(input)
-        if input.KeyCode == Library.ToggleKeybind then
-            ToggleUILib()
-        end
+    local growTween = TweenService:Create(
+        Open,
+        TweenInfo.new(0.1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+        {Size = UDim2.new(0, 260, 0, 40)}
+    )
+    
+    shrinkTween:Play()
+    shrinkTween.Completed:Connect(function()
+        growTween:Play()
     end)
+end
+
+Open.MouseButton1Click:Connect(function()
+    playClickAnimation()
+    ToggleUILib()
+end)
+
+Open.MouseEnter:Connect(function()
+    TweenService:Create(Open, TweenInfo.new(0.2), {BackgroundTransparency = 0.05}):Play()
+end)
+
+Open.MouseLeave:Connect(function()
+    TweenService:Create(Open, TweenInfo.new(0.2), {BackgroundTransparency = 0.15}):Play()
+end)
+
+Library.ToggleKeybind = Enum.KeyCode.LeftControl
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Library.ToggleKeybind then
+        ToggleUILib()
+        playClickAnimation()
+    end
+end)
 
     wait(0.1)
     Main:TweenPosition(UDim2.new(0.5, 0, 2, 0), "Out", "Sine", 0.7, true)
