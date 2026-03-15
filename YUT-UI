@@ -230,32 +230,59 @@ function Library.new(Library, name)
     
 Open.Name = "Open"
 Open.Parent = dogent
-Open.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-Open.BackgroundTransparency = 0.15
-Open.Position = UDim2.new(0.5, 0, 0, 12)
-Open.Size = UDim2.new(0, 260, 0, 40)
+Open.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Open.BackgroundTransparency = 0
+Open.Position = UDim2.new(0.5, 0, 0, 8)
+Open.Size = UDim2.new(0, 240, 0, 34)
 Open.AnchorPoint = Vector2.new(0.5, 0)
 Open.Font = Enum.Font.GothamSemibold
 Open.Text = ""
 Open.TextColor3 = Color3.fromRGB(255, 255, 255)
 Open.TextTransparency = 0
-Open.TextSize = 16.000
+Open.TextSize = 15.000
 Open.Active = true
 Open.Draggable = true
 Open.ClipsDescendants = false
 Open.AutoButtonColor = false
+Open.ZIndex = 2
 
 local OpenCorner = Instance.new("UICorner")
-OpenCorner.CornerRadius = UDim.new(0, 22)
+OpenCorner.CornerRadius = UDim.new(0, 18)
 OpenCorner.Parent = Open
+
+local RainbowBorder = Instance.new("ImageLabel")
+RainbowBorder.Name = "RainbowBorder"
+RainbowBorder.Parent = Open
+RainbowBorder.BackgroundTransparency = 1
+RainbowBorder.Size = UDim2.new(1, 4, 1, 4)
+RainbowBorder.Position = UDim2.new(0, -2, 0, -2)
+RainbowBorder.Image = "rbxassetid://6022666922"
+RainbowBorder.ImageColor3 = Color3.fromRGB(255, 0, 0)
+RainbowBorder.ScaleType = Enum.ScaleType.Slice
+RainbowBorder.SliceCenter = Rect.new(10, 10, 10, 10)
+RainbowBorder.ZIndex = 1
+
+local BorderCorner = Instance.new("UICorner")
+BorderCorner.CornerRadius = UDim.new(0, 20)
+BorderCorner.Parent = RainbowBorder
+
+task.spawn(function()
+    local hue = 0
+    while RainbowBorder and RainbowBorder.Parent do
+        hue = (hue + 0.005) % 1
+        RainbowBorder.ImageColor3 = Color3.fromHSV(hue, 1, 1)
+        task.wait(0.03)
+    end
+end)
 
 local StatusDot = Instance.new("Frame")
 StatusDot.Name = "StatusDot"
 StatusDot.Parent = Open
 StatusDot.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
-StatusDot.Size = UDim2.new(0, 10, 0, 10)
-StatusDot.Position = UDim2.new(0, 14, 0.5, 0)
+StatusDot.Size = UDim2.new(0, 8, 0, 8)
+StatusDot.Position = UDim2.new(0, 12, 0.5, 0)
 StatusDot.AnchorPoint = Vector2.new(0, 0.5)
+StatusDot.ZIndex = 3
 
 local DotCorner = Instance.new("UICorner")
 DotCorner.CornerRadius = UDim.new(1, 0)
@@ -265,37 +292,27 @@ local ScriptNameLabel = Instance.new("TextLabel")
 ScriptNameLabel.Name = "ScriptNameLabel"
 ScriptNameLabel.Parent = Open
 ScriptNameLabel.BackgroundTransparency = 1
-ScriptNameLabel.Size = UDim2.new(1, -38, 1, 0)
-ScriptNameLabel.Position = UDim2.new(0, 34, 0, 0)
+ScriptNameLabel.Size = UDim2.new(1, -30, 1, 0)
+ScriptNameLabel.Position = UDim2.new(0, 28, 0, 0)
 ScriptNameLabel.Font = Enum.Font.GothamSemibold
 ScriptNameLabel.Text = name
 ScriptNameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-ScriptNameLabel.TextSize = 17
+ScriptNameLabel.TextSize = 15
 ScriptNameLabel.TextXAlignment = Enum.TextXAlignment.Left
 ScriptNameLabel.TextYAlignment = Enum.TextYAlignment.Center
-
-local Glow = Instance.new("ImageLabel")
-Glow.Name = "Glow"
-Glow.Parent = Open
-Glow.BackgroundTransparency = 1
-Glow.Size = UDim2.new(1, 20, 1, 20)
-Glow.Position = UDim2.new(0, -10, 0, -10)
-Glow.Image = "rbxassetid://3570695787"
-Glow.ImageColor3 = Color3.fromRGB(100, 200, 255)
-Glow.ImageTransparency = 0.85
-Glow.ZIndex = 0
+ScriptNameLabel.ZIndex = 3
 
 local function playClickAnimation()
     local shrinkTween = TweenService:Create(
         Open,
         TweenInfo.new(0.05, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
-        {Size = UDim2.new(0, 250, 0, 38)}
+        {Size = UDim2.new(0, 230, 0, 32)}
     )
     
     local growTween = TweenService:Create(
         Open,
         TweenInfo.new(0.1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-        {Size = UDim2.new(0, 260, 0, 40)}
+        {Size = UDim2.new(0, 240, 0, 34)}
     )
     
     shrinkTween:Play()
@@ -310,11 +327,11 @@ Open.MouseButton1Click:Connect(function()
 end)
 
 Open.MouseEnter:Connect(function()
-    TweenService:Create(Open, TweenInfo.new(0.2), {BackgroundTransparency = 0.05}):Play()
+    TweenService:Create(Open, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
 end)
 
 Open.MouseLeave:Connect(function()
-    TweenService:Create(Open, TweenInfo.new(0.2), {BackgroundTransparency = 0.15}):Play()
+    TweenService:Create(Open, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
 end)
 
 Library.ToggleKeybind = Enum.KeyCode.LeftControl
